@@ -42,7 +42,7 @@ def main():
     counted = set()
     distances = dict()
 
-    for size in range(1):
+    for size in range(3):
         for i in range(length-size):
 
 
@@ -89,7 +89,14 @@ def main():
         mostFreq = getMaxOccuringChar(column)
         key += chr(ord('E') ^ ord(mostFreq))
     
-    print(key)
+    print("Key assuming probable key length:",key)
+
+    msgstream = ""
+    for i in range(length):
+        msgstream += chr(ord(c_bytes[i]) ^ ord(key[i%5]))
+
+    print("Plaintext:",msgstream)
+
 
 if __name__ == "__main__":
     main()
