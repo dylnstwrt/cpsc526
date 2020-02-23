@@ -42,43 +42,43 @@ def main():
     counted = set()
     distances = dict()
 
-    for size in range(3):
-        for i in range(length-size):
+    # search for 3-tuples
+    for i in range(length-3):
 
 
-            bound = i+6
-            substring = c_bytes[i:bound]
-            count = c_bytes.count(substring)
+        bound = i+3
+        substring = c_bytes[i:bound]
+        count = c_bytes.count(substring)
 
-            if substring in counted:
-                continue
-            counted.add(substring)
+        if substring in counted:
+            continue
+        counted.add(substring)
 
-            # the instances of distances occuring
-            index = bound
-            if count > 1:
-                for j in range(count - 1):
-                    index = c_bytes.find(substring, index)
-                    if distances.__contains__(index - i):
-                        d1 = {index-i: distances.get(index-i) + 1}
-                        distances.update(d1)
-                    else:
-                        distances.update({index-i: 1})
-        
-        factorFreq = dict()
-        for key in distances.keys():
-            factors = getDivisors(key)
-            for factor in factors:
-                if factorFreq.__contains__(factor):
-                    d = {factor: factorFreq.get(factor)+1}
-                    factorFreq.update(d)
+        # the instances of distances occuring
+        index = bound
+        if count > 1:
+            for j in range(count - 1):
+                index = c_bytes.find(substring, index)
+                if distances.__contains__(index - i):
+                    d1 = {index-i: distances.get(index-i) + 1}
+                    distances.update(d1)
                 else:
-                    factorFreq.update({factor: 1})
+                    distances.update({index-i: 1})
+    
+    factorFreq = dict()
+    for key in distances.keys():
+        factors = getDivisors(key)
+        for factor in factors:
+            if factorFreq.__contains__(factor):
+                d = {factor: factorFreq.get(factor)+1}
+                factorFreq.update(d)
+            else:
+                factorFreq.update({factor: 1})
 
-        print("Probable Key Length:", max(factorFreq, key=factorFreq.get))
-        keyLength = max(factorFreq, key=factorFreq.get)
-        counted.clear()
-        distances.clear()
+    print("Probable Key Length:", max(factorFreq, key=factorFreq.get))
+    keyLength = max(factorFreq, key=factorFreq.get)
+    counted.clear()
+    distances.clear()
 
     key = ""
     for j in range(keyLength):
@@ -95,7 +95,7 @@ def main():
     for i in range(length):
         msgstream += chr(ord(c_bytes[i]) ^ ord(key[i%5]))
 
-    print("Plaintext:",msgstream)
+    print("Plaintext using key:",msgstream)
 
 
 if __name__ == "__main__":
