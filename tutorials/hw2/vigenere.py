@@ -26,8 +26,3 @@ for i in range(100):
     plaintext += (chr(keyint)) 
 
 print(plaintext)
-
-ct = open("transmission3",'rb')
-c_bytes = ct.read()
-
-print(c_bytes)
