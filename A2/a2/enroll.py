@@ -8,23 +8,40 @@ File: enroll.py
 ---------------------------------
 """
 
-DATABASE = ""
+DATABASE = "resources/database.json"
 
-import sys, argon2
+import sys, argon2, json
 
+class database:
+    def __init__(self):
+        try:
+            self.dct = json.load(open(DATABASE))
+        except FileNotFoundError:
+            read = open(DATABASE, 'a')
+            read.close()
+            self.dct = dict()
+        except json.JSONDecodeError:
+            self.dct = dict()
+            
+    def usernameTaken(self, username):
+        if username in self.dct:
+            return True
+        else:
+            return False
+            
+    def enrollUser(self, username, password):
+        ph = argon2.PasswordHasher()
+        hash = ph.hash(password)
+        self.dct.update({username: hash})
+        with open(DATABASE, 'w') as json_file:
+            json.dump(self.dct, json_file)
+        return True
 
-def enrollUser(username, password):
-    return True
-
-
-def passwordTooSimple(password):
-
+def simplisticPassword(password):
     # [Num]
     if password.isdigit():
         return True
-
-    # dictionary given is weird, single letters are included (intentional?)
-    words = set(line.strip() for line in open("words.txt"))
+    words = set(line.strip() for line in open("resources/words.txt"))
     for word in words:
         subIndex = password.find(word)
         if subIndex != -1:
@@ -46,10 +63,6 @@ def passwordTooSimple(password):
     return False
 
 
-def usernameTaken(username):
-    return False
-
-
 def main():
     try:
         username = sys.argv[1]
@@ -57,15 +70,18 @@ def main():
     except IndexError:
         print("Usage: authenticate.py <username> <password>")
         exit(-1)
-
-    if (usernameTaken(username)) or (passwordTooSimple(password)):
+    
+    db = database()
+    
+    if db.usernameTaken(username) or simplisticPassword(password):
         print("rejected.")
         sys.exit(-1)
 
-    if enrollUser(username, password):
+    if db.enrollUser(username, password) :
         print("accepted.")
     else:
         print("rejected.")
+        sys.exit(-1)
 
 
 if __name__ == "__main__":
