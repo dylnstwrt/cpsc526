@@ -20,21 +20,22 @@ class authenticator:
     
     def login(self, username, password):
         ph = PasswordHasher()
-        try:
-            if ph.verify(self.db.retrieveHash(username), password):
-                print("access granted.")
-            
-        except:
-            print("access denied.")
-            raise Exception
-
+        if ph.verify(self.db.retrieveHash(username), password):
+            print("access granted.")
+        return True
 def main():
     db = database()
     auth = authenticator(db)
     try:
-        auth.login(sys.argv[1], sys.argv[2])
+        username = sys.argv[1]
+        password = sys.argv[2]
+        auth.login(username, password)
+    except IndexError:
+        print("Usage: authenticate.py <username> <password>")
+        exit(-1)
     except:
-        sys.exit(-1)
+        print("access denied.")
+        exit(-1)
 
 if __name__ == "__main__":
     main()
