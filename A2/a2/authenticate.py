@@ -8,31 +8,33 @@ File: authenticate.py
 ---------------------------------
 """
 
-import argon2, sys
+DATABASE = "resources/database.json"
 
-ph = argon2.PasswordHasher()
+import sys
+from enroll import database
+from argon2 import PasswordHasher
 
-# TODO reimplement after performing enroll
-def retrieveHash(username):
-    hash = ph.hash("password1")
-    return hash
-
-
-def login(db, username, password):
-    correctHash = retrieveHash(username)
-    try:
-        ph.verify(correctHash, password)
-    except:
-        print("access denied.")
-    else:
-        print("access granted.")
-        sys.exit(0)
-
+class authenticator:
+    def __init__(self, database):
+        self.db = database
+    
+    def login(self, username, password):
+        ph = PasswordHasher()
+        try:
+            if ph.verify(self.db.retrieveHash(username), password):
+                print("access granted.")
+            
+        except:
+            print("access denied.")
+            raise Exception
 
 def main():
-    login(0, sys.argv[1], sys.argv[2])
-    sys.exit(-1)
-
+    db = database()
+    auth = authenticator(db)
+    try:
+        auth.login(sys.argv[1], sys.argv[2])
+    except:
+        sys.exit(-1)
 
 if __name__ == "__main__":
     main()
