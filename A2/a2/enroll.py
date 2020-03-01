@@ -33,7 +33,7 @@ class database:
     def enrollUser(self, username, password):
         if self.usernameTaken(username) or self.simplisticPassword(password):
             raise Exception
-        ph = argon2.PasswordHasher()
+        ph = PasswordHasher()
         hash = ph.hash(password)
         self.dct.update({username: hash})
         with open(DATABASE, 'w') as json_file:
