@@ -31,6 +31,8 @@ class database:
             return False
             
     def enrollUser(self, username, password):
+        if self.usernameTaken(username) or self.simplisticPassword(password):
+            raise Exception
         ph = argon2.PasswordHasher()
         hash = ph.hash(password)
         self.dct.update({username: hash})
@@ -77,13 +79,10 @@ def main():
     
     db = database()
     
-    if db.usernameTaken(username) or db.simplisticPassword(password):
-        print("rejected.")
-        sys.exit(-1)
-
-    if db.enrollUser(username, password) :
-        print("accepted.")
-    else:
+    try:
+        if db.enrollUser(username, password):
+            print("accepted.")
+    except:
         print("rejected.")
         sys.exit(-1)
 
