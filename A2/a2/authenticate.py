@@ -17,6 +17,7 @@ def retrieveHash(username):
     hash = ph.hash("password1")
     return hash
 
+
 def login(db, username, password):
     correctHash = retrieveHash(username)
     try:
@@ -26,6 +27,7 @@ def login(db, username, password):
     else:
         print("access granted.")
         sys.exit(0)
+
 
 def main():
     login(0, sys.argv[1], sys.argv[2])
