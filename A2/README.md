@@ -1,4 +1,4 @@
-# Assignment 2, Question 1
+# Assignment 2, Question 1 - CPSC 526
 Name: Dylan Stewart, UCID :30024193
 
 ## Installation
