@@ -12,70 +12,63 @@ import unittest, sys, os
 from authenticate import authenticator
 from enroll import database
 
-# requires that the database.json be empty.
+
+# run from within the 'a2' directory
 class testSuite(unittest.TestCase):
-    def setUp(self):
-        self.db = database("resources/testdb.json")
-        self.auth = authenticator(self.db)
-    
-    def tearDown(self):
+    @classmethod
+    def setUpClass(cls):
+        cls.db = database("resources/testdb.json")
+        cls.auth = authenticator(cls.db)
+
+    @classmethod
+    def tearDownClass(cls):
         os.remove("resources/testdb.json")
     
-    def test_goodUser(self):
+    def test_a_goodCredentials(self):
         username = "user0"
         password = "123abcde123"
         self.db.enrollUser(username, password)
     
-    def test_NumericPassword(self):
+    def test_b_badNumericalPassword(self):
         username = "user1"
         password = "123"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
     
-    def test_WordPassword(self):
+    def test_c_badDictWordPassword(self):
         username = "user1"
         password = "nacho"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
     
-    def test_wordNumPassword(self):
+    def test_c_badWordNumPassword(self):
         username = "user1"
         password = "nacho123"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
     
-    def test_numWordPassword(self):
+    def test_d_badNumWordPassword(self):
         username = "user1"
         password = "123nacho"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
     
-    def test_addSecondUser(self):
+    def test_e_addSecondUser(self):
         username = "user1"
         password = "546fghij546"
-        self.db.enrollUser(username, password)
-        username = "user0"
-        password = "123abcde123"
         self.db.enrollUser(username, password)
     
-    def test_logins(self):
-        username = "user1"
-        password = "546fghij546"
-        self.db.enrollUser(username, password)
-        username = "user0"
-        password = "123abcde123"
-        self.db.enrollUser(username, password)
+    def test_f_logins(self):
         self.auth.login("user0", "123abcde123")
         self.auth.login("user1", "546fghij546")
         
-    def test_usernameTaken(self):
+    def test_g_ifUsernameTaken(self):
         username = "user0"
         password = "123abcde123"
-        self.db.enrollUser(username,password)
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,"123abcde1234")
     
-    def test_BadArgs(self):
+    def test_h_BadArgs(self):
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser("","")
     
