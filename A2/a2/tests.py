@@ -35,7 +35,7 @@ class testSuite(unittest.TestCase):
         Removes the residual database
         """
         os.remove("resources/testdb.json")
-    
+
     def test_a_goodCredentials(self):
         """
         Tests to see that normal user is able to enroll
@@ -43,7 +43,7 @@ class testSuite(unittest.TestCase):
         username = "user0"
         password = "123abcde123"
         self.db.enrollUser(username, password)
-    
+
     def test_b_badNumericalPassword(self):
         """
         Tests for exception when numerical password is used
@@ -52,7 +52,7 @@ class testSuite(unittest.TestCase):
         password = "123"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
-    
+
     def test_c_badDictWordPassword(self):
         """
         Tests for exception when dictionary word is used as password
@@ -61,7 +61,7 @@ class testSuite(unittest.TestCase):
         password = "nacho"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
-    
+
     def test_c_badWordNumPassword(self):
         """
         Tests for exception when a dictionary word with numeric suffix is used.
@@ -70,7 +70,7 @@ class testSuite(unittest.TestCase):
         password = "nacho123"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
-    
+
     def test_d_badNumWordPassword(self):
         """
         Tests for exception when a dictionary word with a numeric prefix is used.
@@ -79,7 +79,7 @@ class testSuite(unittest.TestCase):
         password = "123nacho"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,password)
-    
+
     def test_e_addSecondUser(self):
         """
         Tests to see that a 2nd user is able to be added successfully
@@ -87,14 +87,14 @@ class testSuite(unittest.TestCase):
         username = "user1"
         password = "546fghij546"
         self.db.enrollUser(username, password)
-    
+
     def test_f_logins(self):
         """
         Tests to see that both enrolled users are able to log in successfully.
         """
         self.auth.login("user0", "123abcde123")
         self.auth.login("user1", "546fghij546")
-        
+
     def test_g_ifUsernameTaken(self):
         """
         Tests to see that attempting to enroll a new user with an occupied
@@ -104,13 +104,13 @@ class testSuite(unittest.TestCase):
         password = "123abcde123"
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser(username,"123abcde1234")
-    
+
     def test_h_BadArgs(self):
         """
         Tests for exception when a null username and password are used.
         """
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser("","")
-    
+
 if __name__ == "__main__":
     unittest.main()

@@ -14,22 +14,23 @@ import sys
 from enroll import database
 from argon2 import PasswordHasher
 
+
 class authenticator:
     def __init__(self, database):
         """
         Constructor for authenticator class
 
-        Set the instance's database to the database instance 
+        Set the instance's database to the database instance
         that is passed.
         """
         self.db = database
-    
+
     def login(self, username, password):
         """
         Login function for authenticator class
 
         Retrives password hash for username in dict if it exists,
-        then attempts to verify the password and the hash using 
+        then attempts to verify the password and the hash using
         the argon2-cffi library's verify function in PasswordHasher.
 
         Prints "access granted." if the password is verified against
@@ -43,7 +44,8 @@ class authenticator:
         if ph.verify(self.db.retrieveHash(username), password):
             print("access granted.")
         return True
-        
+
+
 def main():
     """
     Runner for authenticate.py
@@ -69,6 +71,7 @@ def main():
     except:
         print("access denied.")
         exit(-1)
+
 
 if __name__ == "__main__":
     main()

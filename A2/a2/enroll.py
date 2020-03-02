@@ -14,11 +14,11 @@ import sys, json
 from argon2 import PasswordHasher
 
 class database:
-    
+
     def __init__(self, path):
         """
         Constructor for database class
-        
+
         Parameters:
         path (str): String of path pointing to .json file
 
@@ -34,7 +34,7 @@ class database:
             self.dct = dict()
         except json.JSONDecodeError:
             self.dct = dict()
-            
+
     def enrollUser(self, username, password):
         """
         Validates username and password, then serializes username and password
@@ -43,7 +43,7 @@ class database:
         Checks if username is already taken, and if password is too simplistic,
         then will update the dict in the instance with the username as the key
         and the password hash as the data.
-        
+
         The password hash is encoded by the
         argon2-cffi library, which includes a salt, along with other information
         used by the PasswordHasher Class.
@@ -62,7 +62,7 @@ class database:
         with open(self.path, 'w') as json_file:
             json.dump(self.dct, json_file)
         return True
-        
+
     def simplisticPassword(self, password):
         """
         Check if password falls under the guidelines of restricted passwords
@@ -78,7 +78,7 @@ class database:
 
         Returns:
         bool: Returns false if password does not fail any checks. Returns
-        true if password fails. 
+        true if password fails.
         """
         # [Num] or NULL
         if password.isdigit() or password == "":
@@ -101,9 +101,9 @@ class database:
                         toCompare = password[0:subIndex]
                         if toCompare.isdigit():
                             return True
-        
+
         return False
-        
+
     def usernameTaken(self, username):
         """
         Checks if username is taken and returns corresponding bool
@@ -113,12 +113,12 @@ class database:
 
         Return:
         bool: Returns true if username is taken, otherwise returns false.
-        """access granted
+        """
         if username in self.dct:
             return True
         else:
             return False
-        
+
     def retrieveHash(self, username):
         """
         Retrieves the password hash for the specific username parameter
@@ -133,13 +133,13 @@ class database:
 
 def main():
     """
-    Runner for enroll.py. 
-    
+    Runner for enroll.py.
+
     Takes exactly two commandline inputs as username and password respectively;
     Instansiates the database class, and attempts to enroll the username
     and password into the database, which then writes back to the json file.
 
-    If any exception occurs, "rejected." is printed and program 
+    If any exception occurs, "rejected." is printed and program
     exits with code -1.
 
     """
