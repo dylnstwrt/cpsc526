@@ -30,9 +30,6 @@ def main():
         username = sys.argv[1]
         password = sys.argv[2]
         auth.login(username, password)
-    except IndexError:
-        print("Usage: authenticate.py <username> <password>")
-        exit(-1)
     except:
         print("access denied.")
         exit(-1)
