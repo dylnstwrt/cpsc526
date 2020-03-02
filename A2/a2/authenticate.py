@@ -21,6 +21,7 @@ class authenticator:
         if ph.verify(self.db.retrieveHash(username), password):
             print("access granted.")
         return True
+        
 def main():
     db = database("resources/database.json")
     auth = authenticator(db)
