@@ -8,8 +8,6 @@ File: authenticate.py
 ---------------------------------
 """
 
-DATABASE = "resources/database.json"
-
 import sys
 from enroll import database
 from argon2 import PasswordHasher
@@ -24,7 +22,7 @@ class authenticator:
             print("access granted.")
         return True
 def main():
-    db = database()
+    db = database("resources/database.json")
     auth = authenticator(db)
     try:
         username = sys.argv[1]

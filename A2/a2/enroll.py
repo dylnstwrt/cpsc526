@@ -8,18 +8,17 @@ File: enroll.py
 ---------------------------------
 """
 
-DATABASE = "resources/database.json"
-
 import sys, json
 from argon2 import PasswordHasher
 
 class database:
     
-    def __init__(self):
+    def __init__(self, path):
         try:
-            self.dct = json.load(open(DATABASE))
+            self.path = path
+            self.dct = json.load(open(self.path))
         except FileNotFoundError:
-            read = open(DATABASE, 'a')
+            read = open(path, 'a')
             read.close()
             self.dct = dict()
         except json.JSONDecodeError:
@@ -31,7 +30,7 @@ class database:
         ph = PasswordHasher()
         hash = ph.hash(password)
         self.dct.update({username: hash})
-        with open(DATABASE, 'w') as json_file:
+        with open(self.path, 'w') as json_file:
             json.dump(self.dct, json_file)
         return True
         
@@ -74,7 +73,7 @@ def main():
     try:
         username = sys.argv[1]
         password = sys.argv[2]
-        db = database()
+        db = database("resources/database.json")
         if db.enrollUser(username, password):
             print("accepted.")
     except:
