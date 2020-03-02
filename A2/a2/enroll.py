@@ -18,7 +18,7 @@ class database:
             self.path = path
             self.dct = json.load(open(self.path))
         except FileNotFoundError:
-            read = open(path, 'a')
+            read = open(self.path, 'a')
             read.close()
             self.dct = dict()
         except json.JSONDecodeError:
@@ -40,7 +40,7 @@ class database:
             return True
         words = set(line.strip() for line in open("resources/words.txt"))
         for word in words:
-            subIndex = password.find(word)
+            subIndex = password.casefold().find(word)
             if subIndex != -1:
                 # [Word]
                 if word == password:
@@ -56,6 +56,7 @@ class database:
                         toCompare = password[0:subIndex]
                         if toCompare.isdigit():
                             return True
+        
         return False
         
     def usernameTaken(self, username):
@@ -71,6 +72,8 @@ class database:
 
 def main():
     try:
+        if sys.argv.__len__() != 3:
+            raise Exception
         username = sys.argv[1]
         password = sys.argv[2]
         db = database("resources/database.json")
