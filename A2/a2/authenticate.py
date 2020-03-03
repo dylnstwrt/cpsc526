@@ -40,10 +40,14 @@ class authenticator:
         bool: Returns true if password is correct for the username;
         will raise an exception in all other cases.
         """
-        ph = PasswordHasher()
-        if ph.verify(self.db.retrieveHash(username), password):
-            print("access granted.")
-        return True
+        try:
+            ph = PasswordHasher()
+            if ph.verify(self.db.retrieveHash(username), password):
+                print("access granted.")
+            return True
+        except:
+            print("access denied.")
+            raise Exception
 
 
 def main():
@@ -62,6 +66,7 @@ def main():
     """
     try:
         if sys.argv.__len__() != 3:
+            print("access denied.")
             raise Exception
         db = database("resources/database.json")
         auth = authenticator(db)
@@ -69,7 +74,6 @@ def main():
         password = sys.argv[2]
         auth.login(username, password)
     except:
-        print("access denied.")
         exit(-1)
 
 
