@@ -55,12 +55,14 @@ class database:
         case (hopefully)
         """
         if self.usernameTaken(username) or self.simplisticPassword(password):
+            print("rejected.")
             raise Exception
         ph = PasswordHasher()
         hash = ph.hash(password)
         self.dct.update({username: hash})
         with open(self.path, 'w') as json_file:
             json.dump(self.dct, json_file)
+        print("accepted.")
         return True
 
     def simplisticPassword(self, password):
@@ -106,7 +108,7 @@ class database:
 
     def usernameTaken(self, username):
         """
-        Checks if username is taken and returns corresponding bool
+        Checks if username is taken, or is bad and returns corresponding bool
 
         Searches through the instances dict for the presence of the username
         parameter.
@@ -114,6 +116,8 @@ class database:
         Return:
         bool: Returns true if username is taken, otherwise returns false.
         """
+        if username == "":
+            return True
         if username in self.dct:
             return True
         else:
@@ -125,9 +129,9 @@ class database:
 
         Returns:
         unicode: Returns a unicode hash encoded for the argon2-cffi library.
-        Raises KeyError Exception if the username is not enrolled.
+        shouldn't raise any exception, only will return None Object
         """
-        return self.dct[username]
+        return self.dct.get(username)
 
 
 
@@ -145,14 +149,13 @@ def main():
     """
     try:
         if sys.argv.__len__() != 3:
+            print("rejected.")
             raise Exception
         username = sys.argv[1]
         password = sys.argv[2]
         db = database("resources/database.json")
-        if db.enrollUser(username, password):
-            print("accepted.")
+        db.enrollUser(username, password)
     except:
-        print("rejected.")
         sys.exit(-1)
 
 
