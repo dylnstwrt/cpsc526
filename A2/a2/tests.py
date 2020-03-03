@@ -39,6 +39,8 @@ class testSuite(unittest.TestCase):
     def test_a_goodCredentials(self):
         """
         Tests to see that normal user is able to enroll
+
+        Expected: exit with no errors
         """
         username = "user0"
         password = "123abcde123"
@@ -47,6 +49,8 @@ class testSuite(unittest.TestCase):
     def test_b_badNumericalPassword(self):
         """
         Tests for exception when numerical password is used
+
+        Expected: exception is raised
         """
         username = "user1"
         password = "123"
@@ -56,6 +60,8 @@ class testSuite(unittest.TestCase):
     def test_c_badDictWordPassword(self):
         """
         Tests for exception when dictionary word is used as password
+        
+        Expected: exception is raised
         """
         username = "user1"
         password = "nacho"
@@ -65,6 +71,8 @@ class testSuite(unittest.TestCase):
     def test_c_badWordNumPassword(self):
         """
         Tests for exception when a dictionary word with numeric suffix is used.
+        
+        Expected: exception is raised
         """
         username = "user1"
         password = "nacho123"
@@ -74,6 +82,8 @@ class testSuite(unittest.TestCase):
     def test_d_badNumWordPassword(self):
         """
         Tests for exception when a dictionary word with a numeric prefix is used.
+
+        Expected: exception is raised.
         """
         username = "user1"
         password = "123nacho"
@@ -83,6 +93,8 @@ class testSuite(unittest.TestCase):
     def test_e_addSecondUser(self):
         """
         Tests to see that a 2nd user is able to be added successfully
+
+        Expected: no exceptions raised
         """
         username = "user1"
         password = "546fghij546"
@@ -91,6 +103,8 @@ class testSuite(unittest.TestCase):
     def test_f_logins(self):
         """
         Tests to see that both enrolled users are able to log in successfully.
+
+        Expected: no exceptions raised
         """
         self.auth.login("user0", "123abcde123")
         self.auth.login("user1", "546fghij546")
@@ -99,18 +113,42 @@ class testSuite(unittest.TestCase):
         """
         Tests to see that attempting to enroll a new user with an occupied
         username raises an exception.
+
+        Expected: an exception is raised
         """
-        username = "user0"
-        password = "123abcde123"
+
         with self.assertRaises(Exception) as cm:
-            self.db.enrollUser(username,"123abcde1234")
+            self.db.enrollUser("user0","123abcde1234")
 
     def test_h_BadArgs(self):
         """
-        Tests for exception when a null username and password are used.
+        Tests for exception when a blank username and password are used.
+
+        Expected: Exception is Raised
         """
         with self.assertRaises(Exception) as cm:
             self.db.enrollUser("","")
+    
+    def test_i_BadCreds(self):
+        """
+        Tests for exception with non valid credentials
+
+        Expected: exception is raised
+        """
+
+        with self.assertRaises(Exception) as cm:
+            self.auth.login("doesn't", "exist")
+    
+    def test_j_LargeCreds(self):
+        """
+        Tests to make sure that big credentials don't crash anything
+
+        Expected: no exception or runtime issues
+        """
+        username = "A"*99999
+        password = "b"+str(os.urandom(256))+"b"
+        self.db.enrollUser(username, password)
+        self.auth.login(username, password)
 
 if __name__ == "__main__":
     unittest.main()
