@@ -1,0 +1,97 @@
+1. How many failed attempts?
+    if failed login:
+        count++
+    return count
+    
+2. What is the most common username for failed attempts?
+    if failed login:
+        if username in list:
+            count++ for username
+        else:
+            add username to list
+            count = 1
+    return username with highest count
+
+1. and 2. done in tandem
+    
+3. How many successful logins were there?
+    if successful login:
+        count++
+    return count
+    
+4. What is the most common username for successful attempts?
+    if successful login:
+        if username in list:
+            count++ for username
+        else:
+            add username to list
+            count = 1 for username
+    return username with highest count
+
+5. Source IP with the most unsuccessful logins?
+    - Count unsuccessful, keep track of IP addresses and return highest count.
+    
+    if failed login:
+        if IP in list:
+            count++ for IP
+        else:
+            add IP to list
+            count = 1 for IP
+    return IP.
+    
+    can be done with 1.
+    
+6. Top ten passwords for all login attempts:
+    - For unsuccessful or successful, keep track of of password counts and return the top ten of them.
+    
+    if login failed or successful:
+        if password in list:
+            count++ for passwords
+        else:
+            add password to list:
+            count = 1 for password
+    
+7. How many unique source IP addresses had a successful root login on the first try?
+    if username == root:
+        if successful:
+            if in failedFirstTry (continue)
+            else (count++)
+        if unsuccessful:
+            add to failedFirstTry
+            count++ for IP
+            
+8. What was the maximum number of failed root logins before the first successful root log in?
+    assuming count for a unique IP
+    return IP with highest count in failedFirstTry
+    
+9. What are the five most common commands that are executed after a login
+    if command input:
+        if command in list:
+            count ++ for command
+        else:
+            add command
+            count = 1 for command
+
+10. One behaviour is to add a new ssh key authorized for future logins. Give a line number
+where this command is performed
+
+Line 22316, look for .ssh/authorized_keys
+
+Parsing file:
+    read line:
+        parse line into json
+        process json data
+            count failed
+                count failed for usernames
+                count failed for IP
+                count password
+            count successful
+                count successful for usernames
+                count password
+                if username == root:
+                    check if IP attempted to login prior
+                    count successful on first attempt if IP doesn't exist previous
+                    else keep track of highest # of attempts before login, i.e. IP
+            count cmd:
+                count unique commands
+            
