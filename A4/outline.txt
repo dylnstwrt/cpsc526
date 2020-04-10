@@ -94,4 +94,7 @@ Parsing file:
                     else keep track of highest # of attempts before login, i.e. IP
             count cmd:
                 count unique commands
-            
+ 
+ Depth: 49.234.93.93
+ Breadth:
+    China - Most of NK internet is routed through China
