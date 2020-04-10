@@ -1,9 +1,9 @@
-1. How many failed attempts?
+1. How many failed attempts? X
     if failed login:
         count++
     return count
     
-2. What is the most common username for failed attempts?
+2. What is the most common username for failed attempts? X
     if failed login:
         if username in list:
             count++ for username
@@ -14,12 +14,12 @@
 
 1. and 2. done in tandem
     
-3. How many successful logins were there?
+3. How many successful logins were there? X
     if successful login:
         count++
     return count
     
-4. What is the most common username for successful attempts?
+4. What is the most common username for successful attempts? X
     if successful login:
         if username in list:
             count++ for username
@@ -28,7 +28,7 @@
             count = 1 for username
     return username with highest count
 
-5. Source IP with the most unsuccessful logins?
+5. Source IP with the most unsuccessful logins? X
     - Count unsuccessful, keep track of IP addresses and return highest count.
     
     if failed login:
@@ -41,7 +41,7 @@
     
     can be done with 1.
     
-6. Top ten passwords for all login attempts:
+6. Top ten passwords for all login attempts: X
     - For unsuccessful or successful, keep track of of password counts and return the top ten of them.
     
     if login failed or successful:
@@ -64,7 +64,7 @@
     assuming count for a unique IP
     return IP with highest count in failedFirstTry
     
-9. What are the five most common commands that are executed after a login
+9. What are the five most common commands that are executed after a login X
     if command input:
         if command in list:
             count ++ for command
@@ -73,7 +73,7 @@
             count = 1 for command
 
 10. One behaviour is to add a new ssh key authorized for future logins. Give a line number
-where this command is performed
+where this command is performed X
 
 Line 22316, look for .ssh/authorized_keys
 
