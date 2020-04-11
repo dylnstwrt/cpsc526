@@ -5,8 +5,8 @@ from tqdm import tqdm
 
 def main():
     
-    
-    access_token = '6736a407f8b7a6'
+    # token omitted for privacy reasons.
+    access_token = ''
     handler = ipinfo.getHandler(access_token)
     
      
@@ -30,6 +30,8 @@ def main():
     file_name = sys.argv[1];
     file = open(file_name)
     
+    #assumes that each line in the log file contains a single json object.
+    #the honey.log included is formatted for reading, and will not work with this
     for line in tqdm(file.readlines()):
         
         line_object = json.loads(line)
@@ -42,8 +44,12 @@ def main():
         if (eventID == "cowrie.session.connect") & (not(ip in unique_ips)):
             
             unique_ips.add(ip)
+            
+            '''
+            #this data is included in report, cannot run without valid token
             details = handler.getDetails(ip)
             country = details.country_name
+            '''
             
             if (country in connections_by_country):
                 connections_by_country[country] = connections_by_country[country] + 1
@@ -125,12 +131,12 @@ def main():
         commands_entered.pop(toPop)
     print("See line 4697 for attempted public key write to authorized_keys")
     
-    #'''
+    '''
     #This data will be included in report
     print("Country, Count")
     for key in connections_by_country:
         print(key,",",connections_by_country[key])
-    #'''
+    '''
 
 if __name__ == "__main__":
     main()
